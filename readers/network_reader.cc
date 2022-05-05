@@ -8,12 +8,22 @@
 
 namespace moetsi::ssp {
 
+NetworkReader::NetworkReader(int port, std::__cxx11::string host) {
+  last_time_ = CurrentTimeNs();
+  start_time_ = last_time_;
+  rec_frames_ = 0;
+  rec_mbytes_ = 0;
+  port_ = port;
+  host_ = host;
+}
+
 NetworkReader::NetworkReader(int port) {
   last_time_ = CurrentTimeNs();
   start_time_ = last_time_;
   rec_frames_ = 0;
   rec_mbytes_ = 0;
   port_ = port;
+  host_ = "";
 }
 
 void NetworkReader::init() {
@@ -31,7 +41,11 @@ void NetworkReader::init() {
   //auto rc = zmq_bind(responder, bind_str.c_str());
   //std::cerr << "rc = " << rc << std::endl << std::flush;
 
-  socket_->bind("tcp://*:" + std::to_string(port_));
+  if (host_ == "") {
+    socket_->bind("tcp://*:" + std::to_string(port_));
+  } else {
+    socket_->bind("tcp://" + host_ + ":" + std::to_string(port_)); 
+  }
 }
 
 NetworkReader::~NetworkReader() {

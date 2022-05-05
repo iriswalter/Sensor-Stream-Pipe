@@ -54,12 +54,12 @@ extern "C" {
 
 using namespace moetsi::ssp;
 
-extern "C" SSP_EXPORT int ssp_client_opencv(int port)
+extern "C" SSP_EXPORT int ssp_client_opencv(int port, std::__cxx11::string host)
 {
   av_log_set_level(AV_LOG_QUIET);
 
   try {
-    NetworkReader reader(port);
+    NetworkReader reader(port, host);
 
     reader.init();
 
@@ -140,8 +140,9 @@ int main(int argc, char *argv[]) {
     log_file = argv[3];
 
   int port = std::stoi(argv[1]);
+  std::__cxx11::string host = argv[2];
     
-  return ssp_client_opencv(port);
+  return ssp_client_opencv(port, host);
 }
 #endif
 

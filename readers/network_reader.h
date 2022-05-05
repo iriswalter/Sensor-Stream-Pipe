@@ -32,6 +32,7 @@ private:
   // void *responder = nullptr;
 
   int port_;
+  std::__cxx11::string host_;
   std::unique_ptr<zmq::context_t> context_;
   std::unique_ptr<zmq::socket_t> socket_;
 
@@ -40,6 +41,7 @@ private:
 #endif
 
 public:
+  NetworkReader(int port, std::__cxx11::string host);
   NetworkReader(int port);
   void init();
 
